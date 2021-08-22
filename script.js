@@ -1,22 +1,21 @@
+
 angular.module('ionicApp', ['ionic'])
 
-.controller('AppCtrl', function($scope, $ionicModal) {
+.controller('MyCtrl', function($scope, $timeout) {
+  $scope.items = ['Item 1', 'Item 2', 'Item 3'];
   
-  $scope.contacts = [
-    { name: 'Gordon Freeman' },
-    { name: 'Barney Calhoun' },
-    { name: 'Lamarr the Headcrab' },
-  ];
+  $scope.doRefresh = function() {
+    
+    console.log('Refreshing!');
+    $timeout( function() {
+      //simulate async response
+      $scope.items.push('New Item ' + Math.floor(Math.random() * 1000) + 4);
 
-  $ionicModal.fromTemplateUrl('templates/modal.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-  
-  $scope.createContact = function(u) {        
-    $scope.contacts.push({ name: u.firstName + ' ' + u.lastName });
-    $scope.modal.hide();
+      //Stop the ion-refresher from spinning
+      $scope.$broadcast('scroll.refreshComplete');
+    
+    }, 1000);
+      
   };
-
+  
 });
